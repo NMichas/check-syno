@@ -30,17 +30,17 @@ rm -f syno-check-*.tar.gz
 
 # Packaging binaries
 echo Preparing MacOS binary
-#java -jar lib/packr.jar macos.json
+java -jar lib/packr.jar macos.json
 echo Preparing Windows binary
-#java -jar lib/packr.jar windows.json
+java -jar lib/packr.jar windows.json
 echo Preparing Linux binary
 java -jar lib/packr.jar linux.json
 
 # Packaging
 echo Packaging MacOS binary
-#tar -czf check-syno-macos.tar.gz check-syno-macos/*
+tar -czf check-syno-macos.tar.gz check-syno-macos/*
 echo Packaging MacOS binary
-#tar -czf check-syno-windows64.tar.gz check-syno-windows64/*
+tar -czf check-syno-windows64.tar.gz check-syno-windows64/*
 echo Packaging Linux binary
 tar -czf check-syno-linux64.tar.gz check-syno-linux64/*
 
