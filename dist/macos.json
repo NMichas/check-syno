@@ -1,0 +1,12 @@
+{
+  "platform": "mac",
+  "jdk": "lib/openjdk-1.7.0-u80-unofficial-macosx-x86_64-image.zip",
+  "executable": "check-syno",
+  "classpath": [
+    "../target/check-syno-1.0.0-SNAPSHOT.jar"
+  ],
+  "mainclass": "com.github.jitpack.synocheck.CheckSyno",
+  "minimizejre": "hard",
+  "output": "check-syno-macos",
+  "verbose": false
+}

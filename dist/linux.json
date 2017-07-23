@@ -1,0 +1,12 @@
+{
+  "platform": "linux64",
+  "jdk": "lib/openjdk-1.7.0-u80-unofficial-linux-amd64-image.zip",
+  "executable": "check-syno",
+  "classpath": [
+    "../target/check-syno-1.0.0-SNAPSHOT.jar"
+  ],
+  "mainclass": "com.github.jitpack.synocheck.CheckSyno",
+  "minimizejre": "hard",
+  "output": "check-syno-linux64",
+  "verbose": false
+}
