@@ -80,4 +80,9 @@ If you have a JRE available on your server (>= J2SE 1.7), you can use the
 
 ### Without Java
 Extract the `*.tar.gz` file for your OS and execute directly the binary
-distribution.
+distribution (see also below).
+
+### Java? Java is slooooow
+Not really...
+
+![](doc/linuxrun.png)
