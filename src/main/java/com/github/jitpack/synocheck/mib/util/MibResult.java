@@ -4,12 +4,12 @@ public class MibResult {
   private String oid;
   private String friendlyName;
   private long value;
-  private Long warning;
-  private Long critical;
+  private Integer warning;
+  private Integer critical;
   private String unit;
 
-  public MibResult(String friendlyName, Long value, Long warning,
-      Long critical, String unit) {
+  public MibResult(String friendlyName, Long value, Integer warning,
+      Integer critical, String unit) {
     this.friendlyName = friendlyName;
     this.value = value;
     this.warning = warning;
@@ -17,8 +17,8 @@ public class MibResult {
     this.unit = unit;
   }
 
-  public MibResult(String friendlyName, Long value, Long warning,
-      Long critical) {
+  public MibResult(String friendlyName, Long value, Integer warning,
+      Integer critical) {
     this.friendlyName = friendlyName;
     this.value = value;
     this.warning = warning;
@@ -68,19 +68,19 @@ public class MibResult {
     this.value = value;
   }
 
-  public Long getWarning() {
+  public Integer getWarning() {
     return warning;
   }
 
-  public void setWarning(Long warning) {
+  public void setWarning(Integer warning) {
     this.warning = warning;
   }
 
-  public Long getCritical() {
+  public Integer getCritical() {
     return critical;
   }
 
-  public void setCritical(Long critical) {
+  public void setCritical(Integer critical) {
     this.critical = critical;
   }
 

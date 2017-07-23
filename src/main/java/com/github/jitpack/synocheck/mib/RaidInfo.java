@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RaidInfo extends OIDGetter {
+public class RaidInfo {
 
   public static final String ROOT_OID = ".1.3.6.1.4.1.6574.3";
 
@@ -20,7 +20,7 @@ public class RaidInfo extends OIDGetter {
     /** Discover the number of volumes */
     int maxVolumes = 0;
     for (int i = 0; i < 64; i++) {
-      final String singleOID = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.2." + i);
+      final String singleOID = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.2." + i);
       if (singleOID.startsWith("Error") || singleOID.startsWith("noSuchInstance")) {
         break;
       }
@@ -28,9 +28,9 @@ public class RaidInfo extends OIDGetter {
     }
 
     for (int i = 0; i < maxVolumes; i++) {
-      String volumeName = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.2." + i);
-      String volumeStatus = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.3." + i);
-      retVal.add(new MibResult(volumeName + " - status", Long.parseLong(volumeStatus), 2l, 11l));
+      String volumeName = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.2." + i);
+      String volumeStatus = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.3." + i);
+      retVal.add(new MibResult(volumeName + " - status", Long.parseLong(volumeStatus), 2, 11));
     }
 
     return retVal;

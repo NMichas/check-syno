@@ -10,10 +10,32 @@ import org.snmp4j.smi.VariableBinding;
 
 import java.io.IOException;
 
-public abstract class OIDGetter {
+public class OIDGetter {
 
-  public static String getSingleOID(Snmp snmp, CommunityTarget communityTarget, String oid)
+  private static OIDGetter ourInstance = new OIDGetter();
+  private boolean verbose;
+
+  public static OIDGetter getInstance() {
+    return ourInstance;
+  }
+
+  private OIDGetter() {
+  }
+
+  public boolean isVerbose() {
+    return verbose;
+  }
+
+  public void setVerbose(boolean verbose) {
+    this.verbose = verbose;
+  }
+
+  public String getSingleOID(Snmp snmp, CommunityTarget communityTarget, String oid)
       throws IOException {
+    if (isVerbose()) {
+      System.out.println(oid);
+    }
+
     String retVal;
     PDU pdu = new PDU();
     pdu.add(new VariableBinding(new OID(oid)));
@@ -45,6 +67,10 @@ public abstract class OIDGetter {
     else
     {
       retVal = "Error: Agent Timeout... ";
+    }
+
+    if (isVerbose()) {
+      System.out.println("\t" + retVal);
     }
 
     return retVal;

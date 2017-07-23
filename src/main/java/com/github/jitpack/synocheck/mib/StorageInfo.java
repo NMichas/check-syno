@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StorageInfo extends OIDGetter {
+public class StorageInfo {
 
   public static final String ROOT_OID = ".1.3.6.1.4.1.6574.101";
 
@@ -20,7 +20,7 @@ public class StorageInfo extends OIDGetter {
     /** Discover the number of disks */
     int maxDisks = 0;
     for (int i = 1; i < 65; i++) {
-      final String singleOID = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.1." + i);
+      final String singleOID = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.1." + i);
       if (singleOID.startsWith("Error") || singleOID.startsWith("noSuchInstance")) {
         break;
       }
@@ -28,14 +28,14 @@ public class StorageInfo extends OIDGetter {
     }
 
     for (int i = 1; i < maxDisks + 1; i++) {
-      String bytesRead = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.12." + i);
-      String bytesWritten = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.13." + i);
-      String readAccesses = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.5." + i);
-      String writeAccesses = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.6." + i);
-      String loadPercentage = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.8." + i);
-      String loadPercentage1 = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.9." + i);
-      String loadPercentage5 = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.10." + i);
-      String loadPercentage15 = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.11." + i);
+      String bytesRead = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.12." + i);
+      String bytesWritten = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.13." + i);
+      String readAccesses = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.5." + i);
+      String writeAccesses = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.6." + i);
+      String loadPercentage = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.8." + i);
+      String loadPercentage1 = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.9." + i);
+      String loadPercentage5 = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.10." + i);
+      String loadPercentage15 = OIDGetter.getInstance().getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.11." + i);
 
       retVal.add(new MibResult("Disk " + i + " - bytes read", Long.parseLong
           (bytesRead), "B"));

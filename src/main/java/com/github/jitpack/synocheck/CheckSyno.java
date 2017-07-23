@@ -9,6 +9,7 @@ import com.github.jitpack.synocheck.mib.RaidInfo;
 import com.github.jitpack.synocheck.mib.StorageInfo;
 import com.github.jitpack.synocheck.mib.SystemInfo;
 import com.github.jitpack.synocheck.mib.util.MibResult;
+import com.github.jitpack.synocheck.util.OIDGetter;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -36,6 +37,7 @@ public class CheckSyno {
 
   private String hostname;
   private String snmpCommunityName;
+  private boolean verbose;
   private static Options cliOptions;
 
   static {
@@ -59,6 +61,9 @@ public class CheckSyno {
     cliOptions.addOption(
         Option.builder("cd").longOpt("criticalDisk").required(false).hasArg().numberOfArgs(1)
             .desc("Critical disk usage percentage.").build());
+    cliOptions.addOption(
+        Option.builder("v").longOpt("verbose").required(false).hasArg().numberOfArgs(1)
+            .desc("Verbose output (non-Nagios Plugin compliant output)").build());
   }
 
   public CheckSyno(String hostname, String snmpCommunityName) {
@@ -66,7 +71,8 @@ public class CheckSyno {
     this.snmpCommunityName = snmpCommunityName;
   }
 
-  private List<MibResult> getMetrics() throws IOException {
+  private List<MibResult> getMetrics(Integer wd, Integer cd, Integer wt, Integer ct) throws
+      IOException {
     List retVal = new ArrayList<>();
 
     /** Establish a connection */
@@ -81,14 +87,14 @@ public class CheckSyno {
     communityTarget.setVersion(SnmpConstants.version2c);
 
     /** Get info */
-    retVal.addAll(SystemInfo.get(snmp, communityTarget, 45, 50));
-    retVal.addAll(DiskInfo.get(snmp, communityTarget, 45, 50));
+    retVal.addAll(SystemInfo.get(snmp, communityTarget, wt, ct));
+    retVal.addAll(DiskInfo.get(snmp, communityTarget, wt, ct));
     retVal.addAll(RaidInfo.get(snmp, communityTarget));
     retVal.addAll(StorageInfo.get(snmp, communityTarget));
     retVal.addAll(CPUInfo.get(snmp, communityTarget));
     retVal.addAll(MemoryInfo.get(snmp, communityTarget));
     retVal.addAll(NetworkInfo.get(snmp, communityTarget));
-    retVal.addAll(FilesystemInfo.get(snmp, communityTarget, 80, 90));
+    retVal.addAll(FilesystemInfo.get(snmp, communityTarget, wd, cd));
 
     /** Close connection */
     snmp.close();
@@ -98,14 +104,38 @@ public class CheckSyno {
   }
 
   public void processMetricsAndExit(List<MibResult> metrics) {
+    if (verbose) {
+      System.out.println("Processing metrics");
+    }
     StringBuffer retVal = new StringBuffer();
     int status = 0;
     for (int i = 0; i < metrics.size(); i++) {
       MibResult metric = metrics.get(i);
-      status =
-          metric.getWarning() != null ? (metric.getValue() > metric.getWarning() ? 1 : 0) : status;
-      status = metric.getCritical() != null ? (metric.getValue() > metric.getCritical() ? 2 : 0)
-          : status;
+      if (verbose) {
+        System.out.println(metric.getFriendlyName() + " [" + metric.getValue() + "]");
+      }
+      if (metric.getWarning() != null) {
+        if (verbose) {
+          System.out.println("\t Warning threshold: " + metric.getWarning());
+        }
+        if (metric.getValue() > metric.getWarning()) {
+          status = 1;
+          if (verbose) {
+            System.out.println("\t WARNING");
+          }
+        }
+      }
+      if (metric.getCritical() != null) {
+        if (verbose) {
+          System.out.println("\t Critical threshold: " + metric.getCritical());
+        }
+        if (metric.getValue() > metric.getCritical()) {
+          status = 2;
+          if (verbose) {
+            System.out.println("\t CRITICAL");
+          }
+        }
+      }
       retVal.append(metric.toString());
       if (i < metrics.size() - 1) {
         retVal.append(" ");
@@ -113,6 +143,9 @@ public class CheckSyno {
     }
 
     switch (status) {
+      case 0:
+        System.out.println("OK | " + retVal.toString());
+        System.exit(0);
       case 1:
         System.out.println("WARNING | " + retVal.toString());
         System.exit(1);
@@ -120,8 +153,8 @@ public class CheckSyno {
         System.out.println("CRITICAL | " + retVal.toString());
         System.exit(2);
       default:
-        System.out.println("OK | " + retVal.toString());
-        System.exit(0);
+        System.out.println("UNKNOWN | " + retVal.toString());
+        System.exit(3);
     }
   }
 
@@ -137,9 +170,22 @@ public class CheckSyno {
     /** Parse cli and create App instance */
     CommandLine cmd = new DefaultParser().parse(cliOptions, args);
 
+    /** Start fetching */
     CheckSyno checkSyno = new CheckSyno(cmd.getOptionValue("h"), cmd.hasOption("c") ? cmd
         .getOptionValue("c") : "public");
-    final List<MibResult> metrics = checkSyno.getMetrics();
+
+    checkSyno.verbose = cmd.hasOption("v") ? Boolean.parseBoolean(cmd
+        .getOptionValue("v")) : false;
+    final OIDGetter oidGetter = OIDGetter.getInstance();
+    oidGetter.setVerbose(checkSyno.verbose);
+
+    final List<MibResult> metrics = checkSyno.getMetrics(
+        cmd.hasOption("wd") ? Integer.parseInt(cmd.getOptionValue("wd")) : null,
+        cmd.hasOption("cd") ? Integer.parseInt(cmd.getOptionValue("cd")) : null,
+        cmd.hasOption("wt") ? Integer.parseInt(cmd.getOptionValue("wt")) : null,
+        cmd.hasOption("ct") ? Integer.parseInt(cmd.getOptionValue("ct")) : null
+    );
+
     checkSyno.processMetricsAndExit(metrics);
   }
 
