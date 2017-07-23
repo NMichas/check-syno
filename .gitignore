@@ -1,1 +1,8 @@
 target
+dist/lib/openjdk-1.7.0-u80-unofficial-linux-amd64-image.zip
+dist/lib/openjdk-1.7.0-u80-unofficial-macosx-x86_64-image.zip
+dist/lib/openjdk-1.7.0-u80-unofficial-windows-amd64-image.zip
+dist/lib/packr.jar
+dist/check-syno-linux64.tar.gz
+dist/check-syno-macos.tar.gz
+dist/check-syno-windows64.tar.gz
