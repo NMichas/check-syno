@@ -27,8 +27,10 @@ public class NetworkInfo extends OIDGetter {
       String oReceived = getSingleOID(snmp, communityTarget, ROOT_OID + ".6." + i);
       String oTransmitted = getSingleOID(snmp, communityTarget, ROOT_OID + ".10." + i);
 
-      retVal.add(new MibResult("NIC " + nicName + " - octets received", Long.parseLong(oReceived)));
-      retVal.add(new MibResult("NIC " + nicName + " - octets transmitted", Long.parseLong(oTransmitted)));
+      retVal.add(new MibResult("NIC " + nicName + " - octets received", Long.parseLong(oReceived)
+          , "B"));
+      retVal.add(new MibResult("NIC " + nicName + " - octets transmitted", Long.parseLong
+          (oTransmitted), "B"));
     }
 
     return retVal;

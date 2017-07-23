@@ -108,7 +108,7 @@ public class CheckSyno {
           : status;
       retVal.append(metric.toString());
       if (i < metrics.size() - 1) {
-        retVal.append(", ");
+        retVal.append(" ");
       }
     }
 

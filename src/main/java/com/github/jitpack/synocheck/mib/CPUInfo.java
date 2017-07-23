@@ -16,11 +16,11 @@ public class CPUInfo extends OIDGetter {
     List retVal = new ArrayList<>();
 
     retVal.add(new MibResult("CPU user time",
-        Long.parseLong(getSingleOID(snmp, communityTarget, ".1.3.6.1.4.1.2021.11.9.0"))));
+        Long.parseLong(getSingleOID(snmp, communityTarget, ".1.3.6.1.4.1.2021.11.9.0")), "%"));
     retVal.add(new MibResult("CPU system time",
-        Long.parseLong(getSingleOID(snmp, communityTarget, ".1.3.6.1.4.1.2021.11.10.0"))));
+        Long.parseLong(getSingleOID(snmp, communityTarget, ".1.3.6.1.4.1.2021.11.10.0")), "%"));
     retVal.add(new MibResult("CPU idle time",
-        Long.parseLong(getSingleOID(snmp, communityTarget, ".1.3.6.1.4.1.2021.11.11.0"))));
+        Long.parseLong(getSingleOID(snmp, communityTarget, ".1.3.6.1.4.1.2021.11.11.0")), "%"));
     retVal.add(new MibResult("CPU load 1m",
         Long.parseLong(getSingleOID(snmp, communityTarget, ".1.3.6.1.4.1.2021.10.1.5.1"))));
     retVal.add(new MibResult("CPU load 5m",

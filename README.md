@@ -2,7 +2,10 @@
 This is a monitoring plugin following the Nagios Plugins specifications
 to monitor a Synology NAS. The plugin is written in Java but is already
 packed in a distributable format for you in case you do not have a JRE
-installed on your server.
+installed on your server. The plugin works with a Synology in which
+SNMP (v2) is enabled.
+
+![](doc/grafana.png)
 
 ## What is monitored
 ### System
@@ -35,9 +38,9 @@ installed on your server.
 
 ### Filesystems
 :star: Filesystems are automatically discovered - up to 255 filesystems supported
-* Total size (in GB)
-* Used size (in GB)
-* Remaining size (in GB)
+* Total size
+* Used size
+* Remaining
 * Used percentage
 * Bytes read (since NAS' boot)
 * Bytes written (since NAS' boot)

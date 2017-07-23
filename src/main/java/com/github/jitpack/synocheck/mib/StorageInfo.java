@@ -38,22 +38,22 @@ public class StorageInfo extends OIDGetter {
       String loadPercentage15 = getSingleOID(snmp, communityTarget, ROOT_OID + ".1.1.11." + i);
 
       retVal.add(new MibResult("Disk " + i + " - bytes read", Long.parseLong
-          (bytesRead)));
+          (bytesRead), "B"));
       retVal.add(new MibResult("Disk " + i + " - bytes written", Long.parseLong
-          (bytesWritten)));
+          (bytesWritten), "B"));
       retVal.add(new MibResult("Disk " + i + " - read access", Long.parseLong
           (readAccesses)));
       retVal.add(new MibResult("Disk " + i + " - write access", Long.parseLong
           (writeAccesses)));
 
-      retVal.add(new MibResult("Disk " + i + " - load percentage", Long.parseLong
-          (loadPercentage)));
-      retVal.add(new MibResult("Disk " + i + " - load percentage 1m", Long.parseLong
-          (loadPercentage1)));
-      retVal.add(new MibResult("Disk " + i + " - load percentage 5m", Long.parseLong
-          (loadPercentage5)));
-      retVal.add(new MibResult("Disk " + i + " - load percentage 15m", Long.parseLong
-          (loadPercentage15)));
+      retVal.add(new MibResult("Disk " + i + " - load", Long.parseLong
+          (loadPercentage), "%"));
+      retVal.add(new MibResult("Disk " + i + " - load 1m", Long.parseLong
+          (loadPercentage1), "%"));
+      retVal.add(new MibResult("Disk " + i + " - load 5m", Long.parseLong
+          (loadPercentage5), "%"));
+      retVal.add(new MibResult("Disk " + i + " - load 15m", Long.parseLong
+          (loadPercentage15), "%"));
     }
 
     return retVal;

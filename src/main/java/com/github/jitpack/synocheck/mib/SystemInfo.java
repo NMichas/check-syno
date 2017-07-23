@@ -24,7 +24,7 @@ public class SystemInfo extends OIDGetter {
 
     retVal.add(new MibResult("System temperature",
         Long.parseLong(getSingleOID(snmp, communityTarget, ROOT_OID + ".2.0")),
-        temperatureWarning, temperatureCritical));
+        temperatureWarning, temperatureCritical, ""));
 
     retVal.add(new MibResult("Power supply failure",
         Long.parseLong(getSingleOID(snmp, communityTarget, ROOT_OID + ".3.0")),

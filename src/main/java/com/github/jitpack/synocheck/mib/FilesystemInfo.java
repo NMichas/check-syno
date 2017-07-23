@@ -36,17 +36,17 @@ public class FilesystemInfo extends OIDGetter {
         int percentageUsed = totalUsedInGB * 100 / totalSizeInGB;
 
         retVal.add(new MibResult("Filesystem " + fsName + " - used (%)",
-            (long)percentageUsed, (long)fullWarning, (long)fullCritical));
-        retVal.add(new MibResult("Filesystem " + fsName + " - total (in GB)",
-            (long)totalSizeInGB));
-        retVal.add(new MibResult("Filesystem " + fsName + " - used (in GB)",
-            (long)totalUsedInGB));
-        retVal.add(new MibResult("Filesystem " + fsName + " - remaining (in GB)",
-            (long)totalSizeInGB - (long)totalUsedInGB));
+            (long)percentageUsed, (long)fullWarning, (long)fullCritical, "%"));
+        retVal.add(new MibResult("Filesystem " + fsName + " - total",
+            (long)totalSizeInGB, "GB"));
+        retVal.add(new MibResult("Filesystem " + fsName + " - used",
+            (long)totalUsedInGB, "GB"));
+        retVal.add(new MibResult("Filesystem " + fsName + " - remaining",
+            (long)totalSizeInGB - (long)totalUsedInGB, "GB"));
         retVal.add(new MibResult("Filesystem " + fsName + " - bytes read",
-            bytesRead));
+            bytesRead, "c"));
         retVal.add(new MibResult("Filesystem " + fsName + " - bytes written",
-            bytesWritten));
+            bytesWritten, "c"));
       }
     }
 
